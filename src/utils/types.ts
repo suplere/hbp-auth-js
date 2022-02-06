@@ -255,6 +255,10 @@ export type ApiSignInResponse =
       data: {
         session: Session;
         mfa: null | Mfa;
+        jwt_expires_in?: number;
+        jwt_token?: string;
+        refresh_token?: string;
+        user?: User;
       };
       error: null;
     }

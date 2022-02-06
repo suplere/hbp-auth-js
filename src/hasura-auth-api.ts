@@ -102,13 +102,25 @@ export class HasuraAuthApi {
     params: SignInEmailPasswordParams
   ): Promise<ApiSignInResponse> {
     try {
-      let url = "/signin/email-password";
       if (this.appId) {
-        url = "/login";
         params.cookie = false;
+        const res = await this.httpClient.post("/login", params);
+        return {
+          data: {
+            session: {
+              accessToken: res.data.jwt_token,
+              accessTokenExpiresIn: res.data.jwt_expires_in / 1000,
+              refreshToken: res.data.refresh_token,
+              user: res.data.user,
+            },
+            mfa: null
+          },
+          error: null,
+        };
+      } else {
+        const res = await this.httpClient.post("/signin/email-password", params);
+        return { data: res.data, error: null };
       }
-      const res = await this.httpClient.post(url, params);
-      return { data: res.data, error: null };
     } catch (error) {
       return { data: null, error };
     }
@@ -192,11 +204,19 @@ export class HasuraAuthApi {
       let res: AxiosResponse<any, any>;
       if (this.appId) {
         res = await this.httpClient.get("/token/refresh", { params });
+        return {
+          session: {
+            accessToken: res.data.jwt_token,
+            accessTokenExpiresIn: res.data.jwt_expires_in / 1000,
+            refreshToken: res.data.refresh_token,
+            user: res.data.user,
+          },
+          error: null,
+        };
       } else {
         res = await this.httpClient.post("/token", params);
-      }
-
-      return { session: res.data, error: null };
+        return { session: res.data, error: null };
+      }   
     } catch (error) {
       return { session: null, error };
     }
