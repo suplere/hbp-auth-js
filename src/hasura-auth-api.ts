@@ -188,14 +188,20 @@ export class HasuraAuthApi {
     all?: boolean;
   }): Promise<ApiSignOutResponse> {
     try {
-      const url = this.appId ? "/logout" : "/signout";
       if (this.appId) {
-        await this.httpClient.post(url, {
-          refresh_token: params.refreshToken,
-          all: params.all ? params.all : null
-        });
+        await this.httpClient.post(
+          "/logout",
+          {
+            all: params.all ? params.all : null,
+          },
+          {
+            params: {
+              refresh_token: params.refreshToken,
+            },
+          }
+        );
       } else {
-        await this.httpClient.post(url, params);
+        await this.httpClient.post("/signout", params);
       }
       return { error: null };
     } catch (error) {
