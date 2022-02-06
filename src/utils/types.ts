@@ -17,10 +17,22 @@ export type User = {
   };
 };
 
+export type AppUser = {
+  id: string;
+  display_name: string;
+  avatar_url?: string;
+  email?: string;
+  firstname?: string;
+  lastname?: string;
+  mobile?: string;
+};
+
 export type ApiError = {
   message: string;
   status: number;
 };
+
+export type UpdateUserResponse = { user: AppUser | null; error: ApiError | null };
 
 // Sign Up
 export type SignUpEmailPasswordParams = {
@@ -58,6 +70,7 @@ export type SignUpResponse =
 export type SignInEmailPasswordParams = {
   email: string;
   password: string;
+  cookie?: boolean;
 };
 
 export type SignInPasswordlessEmailParams = {

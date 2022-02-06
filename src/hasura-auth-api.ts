@@ -20,6 +20,8 @@ import {
   ApiDeanonymizeResponse,
   ApiError,
   ApiChangeNewPasswordViaTicket,
+  AppUser,
+  UpdateUserResponse,
 } from "./utils/types";
 
 const notImplementedOnHBPError: ApiError = {
@@ -100,7 +102,11 @@ export class HasuraAuthApi {
     params: SignInEmailPasswordParams
   ): Promise<ApiSignInResponse> {
     try {
-      const url = this.appId ? "/login" : "/signin/email-password";
+      let url = "/signin/email-password";
+      if (this.appId) {
+        url = "/login";
+        params.cookie = false;
+      }
       const res = await this.httpClient.post(url, params);
       return { data: res.data, error: null };
     } catch (error) {
@@ -336,6 +342,22 @@ export class HasuraAuthApi {
       return { error: null };
     } catch (error) {
       return { error };
+    }
+  }
+
+  public async updateUser(user: AppUser): Promise<UpdateUserResponse> {
+    try{
+      const res = await this.httpClient.post("/updateUserData", { user }, {
+        headers: {
+          ...this.generateAuthHeaders(),
+        },
+      })
+      return {
+        user: res.data,
+        error: null
+      }
+    } catch (error) {
+      return { user: null, error: error }
     }
   }
 

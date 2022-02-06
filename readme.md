@@ -4,7 +4,7 @@ Hasura Auth JS SDK to handle **Auth** with [Hasura](https://hasura.io/). This pa
 
 ## Install
 
-`$ npm install @nhost/hasura-auth-js`
+`$ npm install @suplere/hbp-auth-js`
 
 ## Documentation
 

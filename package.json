@@ -1,6 +1,6 @@
 {
   "name": "@suplere/hbp-auth-js",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Standalone HBP JS implentation - based on nhost/hbp-auth-js with multi-app support via APPID",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
