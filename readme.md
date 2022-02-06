@@ -1,21 +1,11 @@
-# TypeScript Package Starter
+# Hasura Auth JS SDK
 
-TypeScript boilerplate for NPM or Github Packages
+Hasura Auth JS SDK to handle **Auth** with [Hasura](https://hasura.io/). This package allow use multiple apps with custom endpoint.
 
-## Build project
+## Install
 
-```sh
-npm run build
-```
+`$ npm install @nhost/hasura-auth-js`
 
-## Test pacakge
+## Documentation
 
-```sh
-npm test
-```
 
-## Deploy package
-
-```sh
-npm run deploy
-```
