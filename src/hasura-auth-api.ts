@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
+import { getUserRolesFromClaims } from "./utils/helpers";
 import {
   ResetPasswordParams,
   ChangePasswordParams,
@@ -23,6 +24,7 @@ import {
   AppUser,
   UpdateUserResponse,
 } from "./utils/types";
+
 
 const notImplementedOnHBPError: ApiError = {
   message:'Not implemented on backend HBP server.',
@@ -105,15 +107,19 @@ export class HasuraAuthApi {
       if (this.appId) {
         params.cookie = false;
         const res = await this.httpClient.post("/login", params);
+        
         return {
           data: {
             session: {
               accessToken: res.data.jwt_token,
               accessTokenExpiresIn: res.data.jwt_expires_in / 1000,
               refreshToken: res.data.refresh_token,
-              user: res.data.user,
+              user: {
+                ...res.data.user,
+                ...getUserRolesFromClaims(res.data.jwt_token),
+              },
             },
-            mfa: null
+            mfa: null,
           },
           error: null,
         };
@@ -224,7 +230,10 @@ export class HasuraAuthApi {
             accessToken: res.data.jwt_token,
             accessTokenExpiresIn: res.data.jwt_expires_in / 1000,
             refreshToken: res.data.refresh_token,
-            user: res.data.user,
+            user: {
+                ...res.data.user,
+                ...getUserRolesFromClaims(res.data.jwt_token),
+              },
           },
           error: null,
         };

@@ -1,3 +1,6 @@
+import jwt_decode from "jwt-decode";
+import { JWTClaims, JWTHasuraClaims } from "./types";
+
 export const isBrowser = () => typeof window !== "undefined";
 
 export class inMemoryLocalStorage {
@@ -19,3 +22,13 @@ export class inMemoryLocalStorage {
     delete this.memory[key];
   }
 }
+
+export const getUserRolesFromClaims = (jwt: string): { defaultRole: string, roles: string[] } => {
+  const jwtTokenDecoded: JWTClaims = jwt_decode(jwt);
+  const claims: JWTHasuraClaims =
+    jwtTokenDecoded["https://hasura.io/jwt/claims"];
+  return {
+    defaultRole: claims["x-hasura-default-role"],
+    roles: claims["x-hasura-allowed-roles"],
+  };
+}; 
