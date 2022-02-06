@@ -203,7 +203,10 @@ export class HasuraAuthApi {
     try {
       let res: AxiosResponse<any, any>;
       if (this.appId) {
-        res = await this.httpClient.get("/token/refresh", { params });
+        const query = {
+          refresh_token: params.refreshToken
+        }
+        res = await this.httpClient.get("/token/refresh", {  params: query });
         return {
           session: {
             accessToken: res.data.jwt_token,
