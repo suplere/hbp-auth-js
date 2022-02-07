@@ -377,7 +377,7 @@ export class HasuraAuthClient {
   }
 
   public async updateUser(updatedUser: AppUser) {
-    const { user, error } = await this.api.updateUser(updatedUser)
+    const { user, error } = await this.api.updateUser(updatedUser);
 
     return { user, error };
   }
@@ -645,6 +645,20 @@ export class HasuraAuthClient {
    * @example
    *
    * const user = getUser();
+   *
+   * @docs https://docs.nhost.io/TODO
+   */
+  public getUserRoles() {
+    return this.session && this.session.user ? this.session.user.roles : [];
+  }
+
+  /**
+   *
+   * Use `getUserRoles()` to get the all roles for current user.
+   *
+   * @example
+   *
+   * const userRoles = getUserRoles();
    *
    * @docs https://docs.nhost.io/TODO
    */
