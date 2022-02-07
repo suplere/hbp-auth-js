@@ -22,6 +22,7 @@ import {
   ApiChangeEmailResponse,
   ApiChangePasswordResponse,
   ApiDeanonymizeResponse,
+  AppUser,
 } from "./utils/types";
 import { ApiError } from "./utils/types";
 
@@ -55,7 +56,7 @@ export class HasuraAuthClient {
     refreshIntervalTime,
     clientStorage,
     clientStorageType = "web",
-    appId = null
+    appId = null,
   }: {
     url: string;
     autoRefreshToken?: boolean;
@@ -88,7 +89,7 @@ export class HasuraAuthClient {
     this.sampleRate = 2000; // check every 2 seconds
 
     this.url = url;
-    this.appId = appId
+    this.appId = appId;
 
     this.autoRefreshToken = autoRefreshToken;
 
@@ -366,16 +367,19 @@ export class HasuraAuthClient {
     return { error };
   }
 
-  public async changeLostPassword(
-    ticket: string,
-    new_password: string
-  ) {
+  public async changeLostPassword(ticket: string, new_password: string) {
     const { error } = await this.api.changeNewPasswordViaTicket({
       ticket,
-      new_password
-    })
+      new_password,
+    });
 
-    return { error }
+    return { error };
+  }
+
+  public async updateUser(updatedUser: AppUser) {
+    const { user, error } = await this.api.updateUser(updatedUser)
+
+    return { user, error };
   }
 
   /**

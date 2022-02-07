@@ -19,7 +19,7 @@ export type User = {
 
 export type AppUser = {
   id: string;
-  display_name: string;
+  display_name?: string;
   avatar_url?: string;
   email?: string;
   firstname?: string;
